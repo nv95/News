@@ -1,4 +1,4 @@
-package com.vjettest.news.common
+package com.vjettest.news.common.lists
 
 import android.graphics.Rect
 import android.view.View

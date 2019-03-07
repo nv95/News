@@ -8,7 +8,7 @@ import com.vjettest.news.core.model.Article
 
 class NewsListAdapter(private val dataset: List<Article>) : RecyclerView.Adapter<AppBaseViewHolder<*>>() {
 
-    var loading = false
+    var isLoading = false
         set(value) {
             field = value
             notifyItemChanged(dataset.size)
@@ -19,12 +19,12 @@ class NewsListAdapter(private val dataset: List<Article>) : RecyclerView.Adapter
         else -> LoadingViewHolder.create(parent)
     }
 
-    override fun getItemCount() = dataset.size + 1 // list size plus loading footer
+    override fun getItemCount() = dataset.size + 1 // list size plus isLoading footer
 
     override fun onBindViewHolder(holder: AppBaseViewHolder<*>, position: Int) {
         when (holder) {
             is ArticleHolder -> holder.bind(dataset[position])
-            is LoadingViewHolder -> holder.bind(loading && dataset.isNotEmpty())
+            is LoadingViewHolder -> holder.bind(isLoading && dataset.isNotEmpty())
         }
     }
 

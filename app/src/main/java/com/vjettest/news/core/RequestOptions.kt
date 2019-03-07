@@ -91,7 +91,7 @@ class RequestOptions() : HashMap<String, String>() {
      * Use this to page through the results.
      */
     var page: Int
-        get() = this["page"]?.toIntOrNull() ?: 0
+        get() = this["page"]?.toIntOrNull() ?: 1
         set(value) {
             this["page"] = value.toString()
         }

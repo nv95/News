@@ -11,6 +11,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.vjettest.news.App
 import com.vjettest.news.R
 import com.vjettest.news.common.AppBaseActivity
+import com.vjettest.news.common.lists.PaginationHelper
+import com.vjettest.news.core.PagedList
 import com.vjettest.news.core.RequestOptions
 import com.vjettest.news.core.model.Article
 import com.vjettest.news.core.model.NewsList
@@ -20,7 +22,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
-class NewsListActivity : AppBaseActivity(), Observer<NewsList> {
+class NewsListActivity : AppBaseActivity(), Observer<NewsList>, PaginationHelper.Callback {
 
     @Inject
     lateinit var apiService: NewsApiService
@@ -35,7 +37,7 @@ class NewsListActivity : AppBaseActivity(), Observer<NewsList> {
     private var currentWorker: Disposable? = null
 
     private val options = RequestOptions()
-    private val dataset = ArrayList<Article>()
+    private val dataset = PagedList<Article>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +55,7 @@ class NewsListActivity : AppBaseActivity(), Observer<NewsList> {
 
         adapter = NewsListAdapter(dataset)
         recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        recyclerView.addOnScrollListener(PaginationHelper(recyclerView, this))
         recyclerView.adapter = adapter
 
         options.language = "ru"
@@ -65,7 +68,8 @@ class NewsListActivity : AppBaseActivity(), Observer<NewsList> {
     }
 
     private fun load() {
-        swipeRefreshLayout.isRefreshing = true
+        swipeRefreshLayout.isRefreshing = (options.page == 0)
+        adapter.isLoading = true
         layoutError.visibility = View.GONE
         currentWorker?.takeIf { !it.isDisposed }?.dispose()
         apiService.getTopHeadlines(options)
@@ -73,8 +77,12 @@ class NewsListActivity : AppBaseActivity(), Observer<NewsList> {
             .subscribe(this)
     }
 
+    /**
+     * Loading callback
+     */
+
     override fun onComplete() {
-        adapter.loading = false
+        adapter.isLoading = false
         swipeRefreshLayout.isRefreshing = false
     }
 
@@ -84,7 +92,7 @@ class NewsListActivity : AppBaseActivity(), Observer<NewsList> {
 
     override fun onNext(t: NewsList) {
         val startPos = dataset.size
-        dataset += t.articles
+        dataset.appendPage(t.articles)
         if (startPos == 0) {
             adapter.notifyDataSetChanged()
         } else {
@@ -96,5 +104,18 @@ class NewsListActivity : AppBaseActivity(), Observer<NewsList> {
         e.printStackTrace()
         textViewError.text = e.message
         layoutError.visibility = View.VISIBLE
+    }
+
+    /**
+     * Pagination
+     */
+
+    override fun isLoading() = adapter.isLoading
+
+    override fun isLastPage() = !dataset.hasNextPage
+
+    override fun onNextPage() {
+        options.page++
+        load()
     }
 }
