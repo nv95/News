@@ -1,6 +1,6 @@
 package com.vjettest.news.core.model
 
 data class Source(
-    var id: Int,
+    var id: String,
     var name: String
 )

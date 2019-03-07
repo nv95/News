@@ -9,6 +9,7 @@ internal class AuthenticationInterceptor(private val apiKey: String) : Intercept
         val original = chain.request()
         val request = original.newBuilder()
             .header("X-Api-Key", apiKey)
+            .method(original.method(), original.body())
             .build()
         return chain.proceed(request)
     }
