@@ -11,6 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.vjettest.news.App
 import com.vjettest.news.R
 import com.vjettest.news.common.AppBaseActivity
+import com.vjettest.news.core.RequestOptions
 import com.vjettest.news.core.model.Article
 import com.vjettest.news.core.model.NewsList
 import com.vjettest.news.core.network.NewsApiService
@@ -31,8 +32,10 @@ class NewsListActivity : AppBaseActivity(), Observer<NewsList> {
     private val buttonRetry by bindView<Button>(R.id.button_retry)
 
     private lateinit var adapter: NewsListAdapter
-    private val dataset = ArrayList<Article>()
     private var currentWorker: Disposable? = null
+
+    private val options = RequestOptions()
+    private val dataset = ArrayList<Article>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +54,8 @@ class NewsListActivity : AppBaseActivity(), Observer<NewsList> {
         adapter = NewsListAdapter(dataset)
         recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         recyclerView.adapter = adapter
+
+        options.language = "ru"
         load()
     }
 
@@ -63,7 +68,7 @@ class NewsListActivity : AppBaseActivity(), Observer<NewsList> {
         swipeRefreshLayout.isRefreshing = true
         layoutError.visibility = View.GONE
         currentWorker?.takeIf { !it.isDisposed }?.dispose()
-        apiService.getTopHeadlines("us")
+        apiService.getTopHeadlines(options)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(this)
     }

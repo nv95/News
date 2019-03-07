@@ -3,10 +3,10 @@ package com.vjettest.news.core.network
 import com.vjettest.news.core.model.NewsList
 import io.reactivex.Observable
 import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface NewsApiService {
 
     @GET("top-headlines")
-    fun getTopHeadlines(@Query("country") country: String): Observable<NewsList>
+    fun getTopHeadlines(@QueryMap(encoded=true) options: Map<String, String>): Observable<NewsList>
 }
