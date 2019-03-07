@@ -12,11 +12,12 @@ import com.vjettest.news.App
 import com.vjettest.news.R
 import com.vjettest.news.common.AppBaseActivity
 import com.vjettest.news.common.lists.PaginationHelper
+import com.vjettest.news.core.Category
 import com.vjettest.news.core.PagedList
-import com.vjettest.news.core.RequestOptions
 import com.vjettest.news.core.model.Article
 import com.vjettest.news.core.model.NewsList
 import com.vjettest.news.core.network.NewsApiService
+import com.vjettest.news.core.request.TopHeadlinesRequestOptions
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -36,9 +37,8 @@ class NewsListActivity : AppBaseActivity(), Observer<NewsList>, PaginationHelper
     private lateinit var adapter: NewsListAdapter
     private var currentWorker: Disposable? = null
 
-    private val options = RequestOptions()
+    private val options = TopHeadlinesRequestOptions()
     private val dataset = PagedList<Article>()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +58,8 @@ class NewsListActivity : AppBaseActivity(), Observer<NewsList>, PaginationHelper
         recyclerView.addOnScrollListener(PaginationHelper(recyclerView, this))
         recyclerView.adapter = adapter
 
-        options.language = "ru"
+        options.country = "ru"
+        options.category = Category.GENERAL
         load()
     }
 
@@ -115,7 +116,7 @@ class NewsListActivity : AppBaseActivity(), Observer<NewsList>, PaginationHelper
     override fun isLastPage() = !dataset.hasNextPage
 
     override fun onNextPage() {
-        options.page++
+        options.page = (options.page ?: 1) + 1
         load()
     }
 }
