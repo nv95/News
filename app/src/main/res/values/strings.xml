@@ -2,4 +2,9 @@
     <string name="app_name">News</string>
     <string name="retry">Retry</string>
     <string name="share">Share</string>
+    <string name="favourite">Favourite</string>
+    <string name="in_favourites">In favourites</string>
+    <string name="unable_favourite_article">Unable to favourite this article</string>
+    <string name="removed_from_favourites">Article removed from favourites</string>
+    <string name="added_to_favourites">Article added to favourites</string>
 </resources>

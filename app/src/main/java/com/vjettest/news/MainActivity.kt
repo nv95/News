@@ -3,23 +3,22 @@ package com.vjettest.news
 import android.os.Bundle
 import com.vjettest.news.common.AppBaseActivity
 import com.vjettest.news.common.AppBaseFragment
-import com.vjettest.news.news_list.trending.TrendingTabsFragment
+import com.vjettest.news.news_list.favourites.FavouritesListFragment
 
 class MainActivity : AppBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val fragment = TrendingTabsFragment()
+        setActiveFragment(FavouritesListFragment())
+    }
+
+    fun setActiveFragment(fragment: AppBaseFragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.content, fragment)
             .runOnCommit {
-                setToolbarFromFragment(fragment)
+                setSupportActionBar(fragment.supportToolbar)
             }
             .commit()
-    }
-
-    private fun setToolbarFromFragment(fragment: AppBaseFragment?) {
-        setSupportActionBar(fragment?.supportToolbar)
     }
 }

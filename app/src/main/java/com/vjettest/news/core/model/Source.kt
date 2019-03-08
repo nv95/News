@@ -2,8 +2,12 @@ package com.vjettest.news.core.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity(tableName = "sources")
 data class Source(
+    @PrimaryKey(autoGenerate = false)
     var id: String?,
     var name: String
 ) : Parcelable {

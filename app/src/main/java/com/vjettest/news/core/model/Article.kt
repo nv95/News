@@ -2,16 +2,30 @@ package com.vjettest.news.core.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.util.*
 
+
+
+@Entity(tableName = "articles")
 data class Article(
     var source: Source,
+    @ColumnInfo(name = "author")
     var author: String?,
+    @ColumnInfo(name = "title")
     var title: String,
+    @ColumnInfo(name = "description")
     var description: String?,
+    @PrimaryKey(autoGenerate = false)
+    @ColumnInfo(name = "url")
     var url: String,
+    @ColumnInfo(name = "image_url")
     var urlToImage: String?,
+    @ColumnInfo(name = "published_at")
     var publishedAt: Date,
+    @ColumnInfo(name = "content")
     var content: String?
 ) : Parcelable {
     constructor(parcel: Parcel) : this(

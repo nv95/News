@@ -17,7 +17,7 @@ class NetworkModule {
     @Provides
     @Singleton
     @NonNull
-    fun provideApiService() = Retrofit.Builder()
+    fun provideApiService(): NewsApiService = Retrofit.Builder()
         .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl("https://newsapi.org/v2/")
@@ -28,4 +28,8 @@ class NetworkModule {
         )
         .build()
         .create(NewsApiService::class.java)
+
+    @Provides
+    @NonNull
+    fun provideHttpClient() = OkHttpClient()
 }

@@ -24,6 +24,6 @@ abstract class AppBaseFragment : Fragment() {
 
 
     protected fun <ViewT : View> bindView(@IdRes idRes: Int) = lazy(LazyThreadSafetyMode.NONE) {
-        view!!.findViewById<ViewT>(idRes)
+        view!!.findViewById<ViewT>(idRes)!!
     }
 }

@@ -6,12 +6,15 @@ import com.vjettest.news.common.AppBaseViewHolder
 import com.vjettest.news.common.LoadingViewHolder
 import com.vjettest.news.core.model.Article
 
-class NewsListAdapter(private val dataset: List<Article>) : RecyclerView.Adapter<AppBaseViewHolder<*>>() {
+class NewsListAdapter(private val dataset: List<Article>, private val paginate: Boolean = true)
+    : RecyclerView.Adapter<AppBaseViewHolder<*>>() {
 
     var isLoading = false
         set(value) {
-            field = value
-            notifyItemChanged(dataset.size)
+            if (paginate) {
+                field = value
+                notifyItemChanged(dataset.size)
+            }
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
@@ -22,7 +25,7 @@ class NewsListAdapter(private val dataset: List<Article>) : RecyclerView.Adapter
     override fun getItemCount() = if (dataset.isEmpty()) {
         0
     } else {
-        dataset.size + 1 // list size plus isLoading footer
+        dataset.size + if (paginate) 1 else 0 // list size plus isLoading footer
     }
 
     override fun onBindViewHolder(holder: AppBaseViewHolder<*>, position: Int) {
