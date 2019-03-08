@@ -1,9 +1,16 @@
 package com.vjettest.news.common
 
 import android.view.View
+import androidx.annotation.CallSuper
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class AppBaseViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    
-    abstract fun bind(data: T)
+
+    var boundData: T? = null
+        private set
+
+    @CallSuper
+    open fun bind(data: T) {
+        boundData = data
+    }
 }

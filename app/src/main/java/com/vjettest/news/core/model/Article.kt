@@ -6,23 +6,23 @@ import java.util.*
 
 data class Article(
     var source: Source,
-    var author: String,
+    var author: String?,
     var title: String,
     var description: String,
     var url: String,
     var urlToImage: String,
     var publishedAt: Date,
-    var content: String
+    var content: String?
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readParcelable(Source::class.java.classLoader)!!,
-        parcel.readString()!!,
+        parcel.readString(),
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
         Date(parcel.readLong()),
-        parcel.readString()!!
+        parcel.readString()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
