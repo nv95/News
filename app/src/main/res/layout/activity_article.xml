@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:padding="12dp"
-            app:behavior_overlapTop="100dp"
+            app:behavior_overlapTop="92dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.cardview.widget.CardView
