@@ -1,50 +1,45 @@
-package com.vjettest.news.news_list
+package com.vjettest.news.news_list.trending
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.vjettest.news.App
 import com.vjettest.news.R
-import com.vjettest.news.common.AppBaseActivity
 import com.vjettest.news.common.lists.PaginationHelper
 import com.vjettest.news.core.Category
-import com.vjettest.news.core.PagedList
 import com.vjettest.news.core.model.Article
 import com.vjettest.news.core.model.NewsList
 import com.vjettest.news.core.network.NewsApiService
 import com.vjettest.news.core.request.TopHeadlinesRequestOptions
+import com.vjettest.news.news_list.BaseListFragment
+import com.vjettest.news.news_list.NewsListAdapter
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
-class NewsListActivity : AppBaseActivity(), Observer<NewsList>, PaginationHelper.Callback {
+class TrendingListFragment : BaseListFragment<Article, TopHeadlinesRequestOptions>(), Observer<NewsList> {
 
     @Inject
     lateinit var apiService: NewsApiService
 
-    private val recyclerView by bindView<RecyclerView>(R.id.recyclerView)
-    private val swipeRefreshLayout by bindView<SwipeRefreshLayout>(R.id.swipeRefreshLayout)
-    private val textViewError by bindView<TextView>(R.id.textView_error)
-    private val layoutError by bindView<LinearLayout>(R.id.layout_error)
-    private val buttonRetry by bindView<Button>(R.id.button_retry)
+    override val options = TopHeadlinesRequestOptions().apply {
+        country = "ua"
+    }
+
+    override val layoutId = R.layout.fragment_simple_list
 
     private lateinit var adapter: NewsListAdapter
     private var currentWorker: Disposable? = null
 
-    private val options = TopHeadlinesRequestOptions()
-    private val dataset = PagedList<Article>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_newslist)
+        options["category"] = arguments?.getString("category") ?: Category.GENERAL.value
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         App.component.inject(this)
-        setSupportActionBar(toolbar)
 
         buttonRetry.setOnClickListener {
             load()
@@ -54,12 +49,11 @@ class NewsListActivity : AppBaseActivity(), Observer<NewsList>, PaginationHelper
         }
 
         adapter = NewsListAdapter(dataset)
-        recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         recyclerView.addOnScrollListener(PaginationHelper(this))
         recyclerView.adapter = adapter
 
         options.country = "ru"
-        options.category = Category.GENERAL
         load()
     }
 
@@ -68,8 +62,8 @@ class NewsListActivity : AppBaseActivity(), Observer<NewsList>, PaginationHelper
         super.onDestroy()
     }
 
-    private fun load() {
-        swipeRefreshLayout.isRefreshing = (options.page == 0)
+    override fun load() {
+        swipeRefreshLayout.isRefreshing = dataset.isEmpty()
         adapter.isLoading = true
         layoutError.visibility = View.GONE
         currentWorker?.takeIf { !it.isDisposed }?.dispose()
@@ -108,16 +102,5 @@ class NewsListActivity : AppBaseActivity(), Observer<NewsList>, PaginationHelper
         layoutError.visibility = View.VISIBLE
     }
 
-    /**
-     * Pagination
-     */
-
     override fun isLoading() = adapter.isLoading
-
-    override fun isLastPage() = !dataset.hasNextPage
-
-    override fun onNextPage() {
-        options.page = (options.page ?: 1) + 1
-        load()
-    }
 }

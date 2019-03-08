@@ -1,7 +1,7 @@
 package com.vjettest.news
 
 import com.vjettest.news.core.network.NetworkModule
-import com.vjettest.news.news_list.NewsListActivity
+import com.vjettest.news.news_list.trending.TrendingListFragment
 import dagger.Component
 import javax.inject.Singleton
 
@@ -9,5 +9,5 @@ import javax.inject.Singleton
 @Singleton
 interface AppComponent {
 
-    fun inject(newsListActivity: NewsListActivity)
+    fun inject(trendingListFragment: TrendingListFragment)
 }

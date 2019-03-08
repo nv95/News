@@ -19,7 +19,11 @@ class NewsListAdapter(private val dataset: List<Article>) : RecyclerView.Adapter
         else -> LoadingViewHolder.create(parent)
     }
 
-    override fun getItemCount() = dataset.size + 1 // list size plus isLoading footer
+    override fun getItemCount() = if (dataset.isEmpty()) {
+        0
+    } else {
+        dataset.size + 1 // list size plus isLoading footer
+    }
 
     override fun onBindViewHolder(holder: AppBaseViewHolder<*>, position: Int) {
         when (holder) {
