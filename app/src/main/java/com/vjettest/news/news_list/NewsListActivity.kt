@@ -55,7 +55,7 @@ class NewsListActivity : AppBaseActivity(), Observer<NewsList>, PaginationHelper
 
         adapter = NewsListAdapter(dataset)
         recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-        recyclerView.addOnScrollListener(PaginationHelper(recyclerView, this))
+        recyclerView.addOnScrollListener(PaginationHelper(this))
         recyclerView.adapter = adapter
 
         options.country = "ru"
@@ -93,7 +93,8 @@ class NewsListActivity : AppBaseActivity(), Observer<NewsList>, PaginationHelper
 
     override fun onNext(t: NewsList) {
         val startPos = dataset.size
-        dataset.appendPage(t.articles)
+        dataset += t.articles
+        dataset.total = t.totalResults
         if (startPos == 0) {
             adapter.notifyDataSetChanged()
         } else {

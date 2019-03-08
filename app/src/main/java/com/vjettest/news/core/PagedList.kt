@@ -1,20 +1,14 @@
 package com.vjettest.news.core
 
-class PagedList <E> : ArrayList<E>() {
+class PagedList<E> : ArrayList<E>() {
 
-    var hasNextPage = true
-        private set
+    var total = 0
 
-    fun appendPage(items: List<E>) {
-        if (items.isEmpty()) {
-            hasNextPage = false
-        } else {
-            addAll(items)
-        }
-    }
+    val hasNextPage
+        get() = total != 0 && size < total
 
     override fun clear() {
         super.clear()
-        hasNextPage = true
+        total = 0
     }
 }

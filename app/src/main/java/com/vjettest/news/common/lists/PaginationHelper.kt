@@ -3,15 +3,18 @@ package com.vjettest.news.common.lists
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class PaginationHelper(private val recyclerView: RecyclerView,
-                       private val callback: Callback) : RecyclerView.OnScrollListener() {
+class PaginationHelper(private val callback: Callback) : RecyclerView.OnScrollListener() {
 
     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
         super.onScrollStateChanged(recyclerView, newState)
-        val lastItem = (recyclerView.layoutManager as? LinearLayoutManager)?.findLastVisibleItemPosition() ?: return
-        val total = recyclerView.adapter?.itemCount ?: return
-        if (lastItem >= total - SCROLL_END_THRESHOLD) {
-            if (!callback.isLoading() && !callback.isLastPage()) {
+        val layoutManager = (recyclerView.layoutManager as? LinearLayoutManager)?:return
+        val visibleItemCount = layoutManager.childCount
+        val totalItemCount = layoutManager.itemCount
+        val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+        if (!callback.isLoading() && !callback.isLastPage()) {
+            if ((visibleItemCount + firstVisibleItemPosition) >=
+                totalItemCount && firstVisibleItemPosition >= 0) {
                 callback.onNextPage()
             }
         }
