@@ -3,10 +3,12 @@ package com.vjettest.news.article
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.TextView
 import com.vjettest.news.R
 import com.vjettest.news.common.AppBaseActivity
 import com.vjettest.news.common.formatRelative
+import com.vjettest.news.common.setImageAsync
 import com.vjettest.news.core.model.Article
 
 class ArticleActivity : AppBaseActivity() {
@@ -14,6 +16,7 @@ class ArticleActivity : AppBaseActivity() {
     private val textViewDescription by bindView<TextView>(R.id.textView_description)
     private val textViewDate by bindView<TextView>(R.id.textView_date)
     private val textViewContent by bindView<TextView>(R.id.textView_content)
+    private val imageView by bindView<ImageView>(R.id.imageView)
 
     private lateinit var article: Article
 
@@ -33,6 +36,7 @@ class ArticleActivity : AppBaseActivity() {
         textViewDescription.text = article.description
         textViewDate.text = article.publishedAt.formatRelative(this)
         textViewContent.text = article.content
+        imageView.setImageAsync(article.urlToImage)
     }
 
     companion object {

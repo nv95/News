@@ -27,5 +27,5 @@ class NetworkModule {
                 .build()
         )
         .build()
-        .create(NewsApiService::class.java)!!
+        .create(NewsApiService::class.java)
 }

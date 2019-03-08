@@ -3,16 +3,19 @@ package com.vjettest.news.news_list
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.vjettest.news.R
 import com.vjettest.news.article.ArticleActivity
 import com.vjettest.news.common.AppBaseViewHolder
+import com.vjettest.news.common.setImageAsync
 import com.vjettest.news.core.model.Article
 
 class ArticleHolder(itemView: View) : AppBaseViewHolder<Article>(itemView) {
 
     private val textViewTitle = itemView.findViewById<TextView>(R.id.textView_title)
     private val textViewDescription = itemView.findViewById<TextView>(R.id.textView_description)
+    private val imageView = itemView.findViewById<ImageView>(R.id.imageView)
 
     init {
         itemView.setOnClickListener { view ->
@@ -26,6 +29,7 @@ class ArticleHolder(itemView: View) : AppBaseViewHolder<Article>(itemView) {
         super.bind(data)
         textViewTitle.text = data.title
         textViewDescription.text = data.description
+        imageView.setImageAsync(data.urlToImage)
     }
 
     companion object {

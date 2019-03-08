@@ -1,6 +1,7 @@
 package com.vjettest.news
 
 import android.app.Application
+import com.vjettest.news.common.ImageLoaderModule
 import com.vjettest.news.core.network.NetworkModule
 
 class App : Application() {
@@ -9,6 +10,7 @@ class App : Application() {
         super.onCreate()
         component = DaggerAppComponent.builder()
             .networkModule(NetworkModule())
+            .imageLoaderModule(ImageLoaderModule(this))
             .build()
     }
 

@@ -8,9 +8,9 @@ data class Article(
     var source: Source,
     var author: String?,
     var title: String,
-    var description: String,
+    var description: String?,
     var url: String,
-    var urlToImage: String,
+    var urlToImage: String?,
     var publishedAt: Date,
     var content: String?
 ) : Parcelable {
@@ -18,9 +18,9 @@ data class Article(
         parcel.readParcelable(Source::class.java.classLoader)!!,
         parcel.readString(),
         parcel.readString()!!,
+        parcel.readString(),
         parcel.readString()!!,
-        parcel.readString()!!,
-        parcel.readString()!!,
+        parcel.readString(),
         Date(parcel.readLong()),
         parcel.readString()
     )
