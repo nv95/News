@@ -2,6 +2,7 @@ package com.vjettest.news
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
@@ -11,6 +12,7 @@ import com.vjettest.news.common.plusAssign
 import com.vjettest.news.core.database.AppDatabase
 import com.vjettest.news.core.model.SourceInfo
 import com.vjettest.news.core.network.NewsApiService
+import com.vjettest.news.news_list.NewsListFragment
 import com.vjettest.news.news_list.favourites.FavouritesListFragment
 import com.vjettest.news.news_list.trending.TrendingTabsFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -29,6 +31,7 @@ class MainActivity : AppBaseActivity(), NavigationView.OnNavigationItemSelectedL
     private val navigationView by bindView<NavigationView>(R.id.nav_view)
 
     private val disposables = CompositeDisposable()
+    private var sources = emptyList<SourceInfo>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +39,7 @@ class MainActivity : AppBaseActivity(), NavigationView.OnNavigationItemSelectedL
         App.component.inject(this)
         navigationView.setNavigationItemSelectedListener(this)
 
-        setActiveFragment(TrendingTabsFragment())
+        setActiveFragment(TrendingTabsFragment(), getString(R.string.top_headlines))
         loadSourcesFromCache()
     }
 
@@ -45,7 +48,7 @@ class MainActivity : AppBaseActivity(), NavigationView.OnNavigationItemSelectedL
         super.onDestroy()
     }
 
-    fun setActiveFragment(fragment: AppBaseFragment) {
+    private fun setActiveFragment(fragment: AppBaseFragment, fragmentTitle: CharSequence? = null) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.content, fragment)
             .runOnCommit {
@@ -53,6 +56,7 @@ class MainActivity : AppBaseActivity(), NavigationView.OnNavigationItemSelectedL
                 supportActionBar?.apply {
                     setDisplayHomeAsUpEnabled(true)
                     setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp)
+                    subtitle = fragmentTitle
                 }
             }
             .commit()
@@ -60,15 +64,18 @@ class MainActivity : AppBaseActivity(), NavigationView.OnNavigationItemSelectedL
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         item.isChecked = true
+        setActiveFragment(when (item.itemId) {
+            R.id.nav_top_headlines -> TrendingTabsFragment()
+            R.id.nav_favourites -> FavouritesListFragment()
+            else -> NewsListFragment().apply {
+                arguments = bundleOf("source" to sources[item.order])
+            }
+        }, item.title)
         drawer.closeDrawers()
-        when(item.itemId) {
-            R.id.nav_top_headlines ->setActiveFragment(TrendingTabsFragment())
-            R.id.nav_favourites -> setActiveFragment(FavouritesListFragment())
-        }
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?) = when(item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem?) = when (item?.itemId) {
         android.R.id.home -> {
             drawer.openDrawer(GravityCompat.START)
             true
@@ -102,6 +109,7 @@ class MainActivity : AppBaseActivity(), NavigationView.OnNavigationItemSelectedL
     }
 
     private fun fillSourcesMenu(sources: List<SourceInfo>) {
+        this.sources = sources
         val navMenu = navigationView.menu.findItem(R.id.nav_sources).subMenu
         navMenu.removeGroup(R.id.group_sources)
         sources.forEachIndexed { i, it ->

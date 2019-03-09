@@ -7,6 +7,7 @@ import com.vjettest.news.core.database.AppDatabase
 import com.vjettest.news.core.database.DatabaseModule
 import com.vjettest.news.core.network.NetworkModule
 import com.vjettest.news.core.network.NewsApiService
+import com.vjettest.news.news_list.NewsListFragment
 import com.vjettest.news.news_list.favourites.FavouritesListFragment
 import com.vjettest.news.news_list.trending.TrendingListFragment
 import dagger.Component
@@ -19,6 +20,7 @@ interface AppComponent {
 
     fun inject(mainActivity: MainActivity)
     fun inject(articleActivity: ArticleActivity)
+    fun inject(newsListFragment: NewsListFragment)
     fun inject(trendingListFragment: TrendingListFragment)
     fun inject(favouritesListFragment: FavouritesListFragment)
 
