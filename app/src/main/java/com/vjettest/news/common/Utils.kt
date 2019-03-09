@@ -39,10 +39,10 @@ fun ImageView.setImageAsync(url: String?) {
     if (url == null) {
         setImageResource(R.drawable.placeholder)
     } else if (url != this.tag) {
-        val uri = if (url.contains("://")) {
-            url
-        } else {
-            "http://$url"
+        val uri = when {
+            url.startsWith("//") -> "http:$url"
+            url.contains("://") -> url.replace("https://", "http://")
+            else -> "http://$url"
         }
         this.tag = url
         val imageLoader = App.component.getImageLoader()
