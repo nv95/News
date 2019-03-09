@@ -9,7 +9,31 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import java.util.*
 
-fun Date.formatRelative(context: Context) = DateUtils.getRelativeTimeSpanString(context, this.time)
+fun Date.formatRelative(context: Context) = DateUtils.getRelativeTimeSpanString(
+    this.time,
+    System.currentTimeMillis(),
+    0L,
+    DateUtils.FORMAT_ABBREV_ALL
+)
+
+fun Date.formatDateRelative(context: Context) = if (DateUtils.isToday(this.time)) {
+    context.getString(R.string.today)
+} else {
+    DateUtils.formatDateTime(context, this.time, DateUtils.FORMAT_ABBREV_RELATIVE)
+}
+
+val Date.withoutTime: Date
+    get() {
+        val calendar = Calendar.getInstance()
+
+        calendar.time = this
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+
+        return calendar.time
+    }
 
 fun ImageView.setImageAsync(url: String?) {
     if (url == null) {

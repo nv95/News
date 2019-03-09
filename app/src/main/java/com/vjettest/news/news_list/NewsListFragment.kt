@@ -27,7 +27,7 @@ class NewsListFragment : BaseListFragment<Article, EverythingRequestOptions>(), 
     override val layoutId = R.layout.fragment_list_news
     override val supportToolbar by bindView<Toolbar>(R.id.toolbar)
 
-    private lateinit var adapter: NewsListAdapter
+    private lateinit var adapter: GroupingNewsAdapter
     private var currentWorker: Disposable? = null
     private var source: SourceInfo? = null
 
@@ -47,10 +47,11 @@ class NewsListFragment : BaseListFragment<Article, EverythingRequestOptions>(), 
             load()
         }
         swipeRefreshLayout.setOnRefreshListener {
+            options.page = 1
             load()
         }
 
-        adapter = NewsListAdapter(dataset)
+        adapter = GroupingNewsAdapter()
         recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         recyclerView.addOnScrollListener(PaginationHelper(this))
         recyclerView.adapter = adapter
@@ -87,13 +88,19 @@ class NewsListFragment : BaseListFragment<Article, EverythingRequestOptions>(), 
     }
 
     override fun onNext(t: NewsList) {
-        val startPos = dataset.size
+        if (options.page == 1) {
+            dataset.clear()
+            adapter.clear()
+            adapter.notifyDataSetChanged()
+        }
+        val startPos = adapter.size
         dataset += t.articles
         dataset.total = t.totalResults
+        val size = adapter.append(t.articles)
         if (startPos == 0) {
             adapter.notifyDataSetChanged()
         } else {
-            adapter.notifyItemRangeInserted(startPos, t.articles.size)
+            adapter.notifyItemRangeInserted(startPos, size)
         }
     }
 
