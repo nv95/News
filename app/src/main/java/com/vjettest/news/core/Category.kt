@@ -8,5 +8,7 @@ enum class Category(val value: String) {
     HEALTH("health"),
     SCIENCE("science"),
     SPORTS("sports"),
-    TECHNOLOGY("technology")
+    TECHNOLOGY("technology");
+
+    override fun toString() = value
 }

@@ -7,4 +7,7 @@
     <string name="unable_favourite_article">Unable to favourite this article</string>
     <string name="removed_from_favourites">Article removed from favourites</string>
     <string name="added_to_favourites">Article added to favourites</string>
+    <string name="top_headlines">Top headlines</string>
+    <string name="favourites">Favourites</string>
+    <string name="sources">Sources</string>
 </resources>

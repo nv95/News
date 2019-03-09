@@ -17,9 +17,10 @@ import javax.inject.Singleton
 @Singleton
 interface AppComponent {
 
+    fun inject(mainActivity: MainActivity)
+    fun inject(articleActivity: ArticleActivity)
     fun inject(trendingListFragment: TrendingListFragment)
     fun inject(favouritesListFragment: FavouritesListFragment)
-    fun inject(articleActivity: ArticleActivity)
 
     fun getApiService(): NewsApiService
     fun getImageLoader(): ImageLoader

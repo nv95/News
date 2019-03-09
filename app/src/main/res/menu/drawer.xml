@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_top_headlines"
+            android:icon="@drawable/ic_whatshot_black_24dp"
+            android:checked="true"
+            android:title="@string/top_headlines"/>
+        <item
+            android:id="@+id/nav_favourites"
+            android:icon="@drawable/ic_star_border_black_24dp"
+            android:title="@string/favourites"/>
+    </group>
+    <item android:id="@+id/nav_sources"
+          android:title="@string/sources">
+        <menu>
+            <group android:id="@+id/group_sources"
+                   android:checkableBehavior="single"/>
+        </menu>
+    </item>
+</menu>
