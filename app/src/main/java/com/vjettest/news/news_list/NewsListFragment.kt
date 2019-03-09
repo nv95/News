@@ -11,23 +11,24 @@ import com.vjettest.news.core.model.Article
 import com.vjettest.news.core.model.NewsList
 import com.vjettest.news.core.model.SourceInfo
 import com.vjettest.news.core.network.NewsApiService
-import com.vjettest.news.core.request.EverythingRequestOptions
+import com.vjettest.news.core.network.options.EverythingRequestOptions
+import com.vjettest.news.core.network.options.RequestOptions
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
-class NewsListFragment : BaseListFragment<Article, EverythingRequestOptions>(), Observer<NewsList> {
+open class NewsListFragment : BaseListFragment<Article>(), Observer<NewsList> {
 
     @Inject
     lateinit var apiService: NewsApiService
 
-    override val options = EverythingRequestOptions()
+    override val options = EverythingRequestOptions() as RequestOptions
 
     override val layoutId = R.layout.fragment_list_news
     override val supportToolbar by bindView<Toolbar>(R.id.toolbar)
 
-    private lateinit var adapter: GroupingNewsAdapter
+    private lateinit var adapter: NewsListAdapter
     private var currentWorker: Disposable? = null
     private var source: SourceInfo? = null
 
@@ -51,7 +52,7 @@ class NewsListFragment : BaseListFragment<Article, EverythingRequestOptions>(), 
             load()
         }
 
-        adapter = GroupingNewsAdapter()
+        adapter = NewsListAdapter(dataset)
         recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         recyclerView.addOnScrollListener(PaginationHelper(this))
         recyclerView.adapter = adapter
@@ -69,10 +70,12 @@ class NewsListFragment : BaseListFragment<Article, EverythingRequestOptions>(), 
         adapter.isLoading = true
         layoutError.visibility = View.GONE
         currentWorker?.takeIf { !it.isDisposed }?.dispose()
-        apiService.getTopHeadlines(options)
+        onLoadContent()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(this)
     }
+
+    protected open fun onLoadContent() = apiService.getTopHeadlines(options)
 
     /**
      * Loading callback
@@ -90,17 +93,14 @@ class NewsListFragment : BaseListFragment<Article, EverythingRequestOptions>(), 
     override fun onNext(t: NewsList) {
         if (options.page == 1) {
             dataset.clear()
-            adapter.clear()
-            adapter.notifyDataSetChanged()
         }
-        val startPos = adapter.size
+        val startPos = dataset.size
         dataset += t.articles
         dataset.total = t.totalResults
-        val size = adapter.append(t.articles)
         if (startPos == 0) {
             adapter.notifyDataSetChanged()
         } else {
-            adapter.notifyItemRangeInserted(startPos, size)
+            adapter.notifyItemRangeInserted(startPos, t.articles.size)
         }
     }
 

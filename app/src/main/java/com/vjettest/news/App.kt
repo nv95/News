@@ -1,7 +1,7 @@
 package com.vjettest.news
 
 import android.app.Application
-import com.vjettest.news.common.ImageLoaderModule
+import com.vjettest.news.common.images.ImageLoaderModule
 import com.vjettest.news.core.database.DatabaseModule
 import com.vjettest.news.core.network.NetworkModule
 

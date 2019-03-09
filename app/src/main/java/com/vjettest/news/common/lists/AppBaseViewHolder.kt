@@ -1,4 +1,4 @@
-package com.vjettest.news.common
+package com.vjettest.news.common.lists
 
 import android.view.View
 import androidx.annotation.CallSuper

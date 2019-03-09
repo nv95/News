@@ -9,14 +9,14 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import java.util.*
 
-fun Date.formatRelative(context: Context) = DateUtils.getRelativeTimeSpanString(
+fun Date.formatRelative(): CharSequence = DateUtils.getRelativeTimeSpanString(
     this.time,
     System.currentTimeMillis(),
     0L,
     DateUtils.FORMAT_ABBREV_ALL
 )
 
-fun Date.formatDateRelative(context: Context) = if (DateUtils.isToday(this.time)) {
+fun Date.formatDateRelative(context: Context): String = if (DateUtils.isToday(this.time)) {
     context.getString(R.string.today)
 } else {
     DateUtils.formatDateTime(context, this.time, DateUtils.FORMAT_ABBREV_RELATIVE)

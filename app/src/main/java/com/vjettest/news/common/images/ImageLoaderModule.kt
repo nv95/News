@@ -1,4 +1,4 @@
-package com.vjettest.news.common
+package com.vjettest.news.common.images
 
 import android.content.Context
 import androidx.annotation.NonNull

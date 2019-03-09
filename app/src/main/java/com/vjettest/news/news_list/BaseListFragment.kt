@@ -11,12 +11,12 @@ import com.vjettest.news.R
 import com.vjettest.news.common.AppBaseFragment
 import com.vjettest.news.common.lists.PaginationHelper
 import com.vjettest.news.core.PagedList
-import com.vjettest.news.core.request.RequestOptions
+import com.vjettest.news.core.network.options.RequestOptions
 
-abstract class BaseListFragment<E : Parcelable, O : RequestOptions> : AppBaseFragment(),
+abstract class BaseListFragment<E : Parcelable> : AppBaseFragment(),
     PaginationHelper.Callback {
 
-    protected abstract val options: O
+    protected abstract val options: RequestOptions
 
     protected val dataset = PagedList<E>()
 

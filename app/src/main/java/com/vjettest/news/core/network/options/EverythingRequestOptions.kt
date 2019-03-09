@@ -1,4 +1,4 @@
-package com.vjettest.news.core.request
+package com.vjettest.news.core.network.options
 
 import java.text.SimpleDateFormat
 import java.util.*

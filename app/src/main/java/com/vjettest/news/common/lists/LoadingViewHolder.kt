@@ -1,4 +1,4 @@
-package com.vjettest.news.common
+package com.vjettest.news.common.lists
 
 import android.view.LayoutInflater
 import android.view.View

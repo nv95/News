@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.vjettest.news.R
 import com.vjettest.news.article.ArticleActivity
-import com.vjettest.news.common.AppBaseViewHolder
+import com.vjettest.news.common.lists.AppBaseViewHolder
 import com.vjettest.news.common.setImageAsync
 import com.vjettest.news.core.model.Article
 

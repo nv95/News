@@ -2,8 +2,8 @@ package com.vjettest.news.news_list
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.vjettest.news.common.AppBaseViewHolder
-import com.vjettest.news.common.LoadingViewHolder
+import com.vjettest.news.common.lists.AppBaseViewHolder
+import com.vjettest.news.common.lists.LoadingViewHolder
 import com.vjettest.news.core.model.Article
 
 class NewsListAdapter(private val dataset: List<Article>, private val paginate: Boolean = true)

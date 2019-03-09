@@ -14,6 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.vjettest.news.App
 import com.vjettest.news.R
 import com.vjettest.news.common.*
+import com.vjettest.news.common.images.ImagesStore
 import com.vjettest.news.core.database.AppDatabase
 import com.vjettest.news.core.model.Article
 import io.reactivex.Observable
@@ -83,7 +84,7 @@ class ArticleActivity : AppBaseActivity() {
 
         title = article.title
         textViewDescription.text = article.description ?: article.title
-        textViewDate.text = article.publishedAt.formatRelative(this)
+        textViewDate.text = article.publishedAt.formatRelative()
         textViewContent.text = article.content
         imageView.setImageAsync(article.urlToImage)
         disposables += database.articlesDao().findByUrl(article.url)

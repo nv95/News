@@ -1,4 +1,4 @@
-package com.vjettest.news.core.request
+package com.vjettest.news.core.network.options
 
 import com.vjettest.news.core.Category
 
