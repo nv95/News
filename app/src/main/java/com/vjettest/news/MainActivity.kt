@@ -16,6 +16,7 @@ import com.vjettest.news.core.preferences.AppPreferences
 import com.vjettest.news.news_list.NewsListFragment
 import com.vjettest.news.news_list.favourites.FavouritesListFragment
 import com.vjettest.news.news_list.trending.TrendingTabsFragment
+import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -116,7 +117,7 @@ class MainActivity : AppBaseActivity(), NavigationView.OnNavigationItemSelectedL
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doAfterNext {
-                disposables += database.sourcesDao().replaceWith(it.sources)
+                disposables += Completable.fromAction { database.sourcesDao().replaceWith(it.sources) }
                     .subscribeOn(Schedulers.io())
                     .subscribe()
             }

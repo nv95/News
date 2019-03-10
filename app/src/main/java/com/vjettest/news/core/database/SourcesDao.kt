@@ -6,7 +6,6 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.vjettest.news.core.model.SourceInfo
 import io.reactivex.Observable
-import io.reactivex.Single
 
 @Dao
 abstract class SourcesDao {
@@ -21,8 +20,8 @@ abstract class SourcesDao {
     abstract fun deleteAll()
 
     @Transaction
-    open fun replaceWith(sources: List<SourceInfo>): Single<List<Long>> = Single.fromCallable<List<Long>> {
+    open fun replaceWith(sources: List<SourceInfo>): List<Long> {
         deleteAll()
-        insert(sources)
+        return insert(sources)
     }
 }
