@@ -57,13 +57,15 @@
                         android:id="@+id/textView_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
                         android:gravity="end"
                         tools:text="2 days ago"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
                 <ImageView
                         android:id="@+id/imageView"
-                        android:scaleType="fitCenter"
+                        android:scaleType="fitXY"
+                        android:adjustViewBounds="true"
                         android:minHeight="56dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>

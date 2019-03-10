@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
@@ -104,7 +105,11 @@ class ArticleActivity : AppBaseActivity() {
         textViewDescription.text = article.description ?: article.title
         textViewDate.text = article.publishedAt.formatRelative()
         textViewContent.text = article.content
-        imageView.setImageAsync(article.urlToImage)
+        if (article.urlToImage != null) {
+            imageView.setImageAsync(article.urlToImage)
+        } else {
+            imageView.visibility = View.GONE
+        }
         disposables += database.articlesDao().findByUrl(article.url)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
