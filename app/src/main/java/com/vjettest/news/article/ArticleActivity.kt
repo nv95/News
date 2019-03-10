@@ -2,19 +2,25 @@ package com.vjettest.news.article
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.ShareActionProvider
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuItemCompat
 import androidx.core.widget.TextViewCompat
 import com.google.android.material.snackbar.Snackbar
 import com.vjettest.news.App
 import com.vjettest.news.R
-import com.vjettest.news.common.*
+import com.vjettest.news.common.AppBaseActivity
+import com.vjettest.news.common.formatRelative
 import com.vjettest.news.common.images.ImagesStore
+import com.vjettest.news.common.plusAssign
+import com.vjettest.news.common.setImageAsync
 import com.vjettest.news.core.database.AppDatabase
 import com.vjettest.news.core.model.Article
 import io.reactivex.Observable
@@ -28,11 +34,13 @@ class ArticleActivity : AppBaseActivity() {
     @Inject
     lateinit var database: AppDatabase
 
+    private val textViewTitle by bindView<TextView>(R.id.textView_title)
     private val textViewDescription by bindView<TextView>(R.id.textView_description)
     private val textViewDate by bindView<TextView>(R.id.textView_date)
     private val textViewContent by bindView<TextView>(R.id.textView_content)
     private val imageView by bindView<ImageView>(R.id.imageView)
     private val buttonFavourite by bindView<AppCompatButton>(R.id.button_favourite)
+    private val buttonOpen by bindView<AppCompatButton>(R.id.button_open)
 
     private val disposables = CompositeDisposable()
 
@@ -72,6 +80,15 @@ class ArticleActivity : AppBaseActivity() {
                 addToFavourites()
             }
         }
+        buttonOpen.setOnClickListener {
+            val intent = CustomTabsIntent.Builder()
+                .addDefaultShareMenuItem()
+                .setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                .setShowTitle(true)
+                .build()
+            intent.launchUrl(this, Uri.parse(article.url))
+
+        }
     }
 
     override fun onDestroy() {
@@ -83,6 +100,7 @@ class ArticleActivity : AppBaseActivity() {
         super.onPostCreate(savedInstanceState)
 
         title = article.title
+        textViewTitle.text = article.title
         textViewDescription.text = article.description ?: article.title
         textViewDate.text = article.publishedAt.formatRelative()
         textViewContent.text = article.content

@@ -19,4 +19,5 @@
     <string name="no_date_selected">No date selected</string>
     <string name="reset">Reset</string>
     <string name="filter">Filter</string>
+    <string name="open_in_browser">Open in browser</string>
 </resources>
