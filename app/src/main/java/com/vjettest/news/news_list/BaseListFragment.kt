@@ -25,6 +25,7 @@ abstract class BaseListFragment<E : Parcelable> : AppBaseFragment(),
     protected val textViewError by bindView<TextView>(R.id.textView_error)
     protected val layoutError by bindView<LinearLayout>(R.id.layout_error)
     protected val buttonRetry by bindView<Button>(R.id.button_retry)
+    protected val texViewHolder by bindView<TextView>(R.id.textView_holder)
 
     /**
      * Lifecycle

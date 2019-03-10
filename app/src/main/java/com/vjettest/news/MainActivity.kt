@@ -45,6 +45,7 @@ class MainActivity : AppBaseActivity(), NavigationView.OnNavigationItemSelectedL
 
         setActiveFragment(TrendingTabsFragment(), getString(R.string.top_headlines))
         loadSourcesFromCache()
+        loadSourcesFromNetwork()
     }
 
     override fun onDestroy() {
@@ -103,13 +104,7 @@ class MainActivity : AppBaseActivity(), NavigationView.OnNavigationItemSelectedL
         disposables += database.sourcesDao().getAll()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ result ->
-                fillSourcesMenu(result)
-                loadSourcesFromNetwork()
-            }, { e ->
-                e.printStackTrace()
-                loadSourcesFromNetwork()
-            })
+            .subscribe(this::fillSourcesMenu, Throwable::printStackTrace)
     }
 
     private fun loadSourcesFromNetwork() {
@@ -121,11 +116,7 @@ class MainActivity : AppBaseActivity(), NavigationView.OnNavigationItemSelectedL
                     .subscribeOn(Schedulers.io())
                     .subscribe()
             }
-            .subscribe({ result ->
-                fillSourcesMenu(result.sources)
-            }, { e ->
-                e.printStackTrace()
-            })
+            .subscribe({ /** ok */ }, Throwable::printStackTrace)
     }
 
     private fun fillSourcesMenu(sources: List<SourceInfo>) {

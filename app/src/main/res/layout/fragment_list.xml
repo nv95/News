@@ -62,4 +62,18 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/textView_holder"
+        android:text="@string/no_articles_found"
+        android:gravity="center_horizontal"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/recyclerView"
+        app:layout_anchorGravity="center"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -9,20 +9,21 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.google.android.material.snackbar.Snackbar
 import com.vjettest.news.App
 import com.vjettest.news.R
+import com.vjettest.news.common.getErrorMessage
 import com.vjettest.news.common.lists.PaginationHelper
 import com.vjettest.news.core.model.Article
 import com.vjettest.news.core.model.NewsList
 import com.vjettest.news.core.network.NewsApiService
 import com.vjettest.news.core.network.options.EverythingRequestOptions
 import com.vjettest.news.core.network.options.RequestOptions
-import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
-open class NewsListFragment : BaseListFragment<Article>(), Observer<NewsList> {
+open class NewsListFragment : BaseListFragment<Article>() {
 
     @Inject
     lateinit var apiService: NewsApiService
@@ -39,6 +40,7 @@ open class NewsListFragment : BaseListFragment<Article>(), Observer<NewsList> {
         super.onCreate(savedInstanceState)
         arguments?.let {
             options.fromBundle(it)
+            (options as? EverythingRequestOptions)?.sortBy = App.component.getPreferences().defaultSortOrder
         }
         setHasOptionsMenu(true)
     }
@@ -115,9 +117,9 @@ open class NewsListFragment : BaseListFragment<Article>(), Observer<NewsList> {
         adapter.isLoading = true
         layoutError.visibility = View.GONE
         currentWorker?.takeIf { !it.isDisposed }?.dispose()
-        onLoadContent()
+        currentWorker = onLoadContent()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(this)
+            .subscribe(this::onNext, this::onError, this::onComplete)
     }
 
     protected open fun onLoadContent() = apiService.getEverything(options)
@@ -126,16 +128,14 @@ open class NewsListFragment : BaseListFragment<Article>(), Observer<NewsList> {
      * Loading callback
      */
 
-    override fun onComplete() {
+    private fun onComplete() {
         adapter.isLoading = false
         swipeRefreshLayout.isRefreshing = false
+        texViewHolder.visibility = if (dataset.isEmpty()) View.VISIBLE else View.GONE
     }
 
-    override fun onSubscribe(d: Disposable) {
-        currentWorker = d
-    }
 
-    override fun onNext(t: NewsList) {
+    private fun onNext(t: NewsList) {
         if (options.page == RequestOptions.PAGE_DEFAULT) {
             dataset.clear()
         }
@@ -149,10 +149,19 @@ open class NewsListFragment : BaseListFragment<Article>(), Observer<NewsList> {
         }
     }
 
-    override fun onError(e: Throwable) {
+    private fun onError(e: Throwable) {
+        adapter.isLoading = false
+        swipeRefreshLayout.isRefreshing = false
+        texViewHolder.visibility = View.GONE
+        if (dataset.isEmpty()) {
+            textViewError.text = context?.getErrorMessage(e)
+            layoutError.visibility = View.VISIBLE
+        } else {
+            Snackbar.make(recyclerView, requireContext().getErrorMessage(e), Snackbar.LENGTH_SHORT)
+                .setAction(R.string.retry) { load() }
+                .show()
+        }
         e.printStackTrace()
-        textViewError.text = e.message
-        layoutError.visibility = View.VISIBLE
     }
 
     override fun isLoading() = adapter.isLoading

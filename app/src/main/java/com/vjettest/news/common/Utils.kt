@@ -8,6 +8,7 @@ import com.vjettest.news.App
 import com.vjettest.news.R
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import java.net.UnknownHostException
 import java.util.*
 
 fun Date.formatRelative(): CharSequence = DateUtils.getRelativeTimeSpanString(
@@ -56,3 +57,8 @@ fun ImageView.setImageAsync(url: String?) {
 operator fun CompositeDisposable.plusAssign(d: Disposable) {
     this.add(d)
 }
+
+fun Context.getErrorMessage(e: Throwable): String = getString(when(e) {
+    is UnknownHostException -> R.string.network_unavailable
+    else -> R.string.error_occurred
+})

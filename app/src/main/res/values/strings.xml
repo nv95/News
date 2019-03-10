@@ -20,4 +20,8 @@
     <string name="reset">Reset</string>
     <string name="filter">Filter</string>
     <string name="open_in_browser">Open in browser</string>
+    <string name="error_occurred">Error has occurred</string>
+    <string name="network_unavailable">Network is unavailable</string>
+    <string name="no_articles_found">No articles found</string>
+    <string name="no_favourites_found">No favourites found</string>
 </resources>

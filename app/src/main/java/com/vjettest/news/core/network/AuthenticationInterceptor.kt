@@ -5,6 +5,7 @@ import okhttp3.Response
 
 internal class AuthenticationInterceptor(private val apiKey: String) : Interceptor {
 
+    @Throws(Exception::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
         val request = original.newBuilder()

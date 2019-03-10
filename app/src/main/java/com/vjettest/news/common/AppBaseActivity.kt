@@ -6,6 +6,7 @@ import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.vjettest.news.R
+import java.net.UnknownHostException
 
 abstract class AppBaseActivity : AppCompatActivity() {
 
