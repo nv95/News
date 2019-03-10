@@ -68,24 +68,30 @@ open class NewsListFragment : BaseListFragment<Article>(), Observer<NewsList> {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.options_newslist, menu)
+        menu?.findItem(R.id.sort_publishedAt)?.isChecked = (options as? EverythingRequestOptions)?.sortBy ==
+                EverythingRequestOptions.SORT_BY_PUBLISHED_AT
+        menu?.findItem(R.id.sort_popularity)?.isChecked = (options as? EverythingRequestOptions)?.sortBy ==
+                EverythingRequestOptions.SORT_BY_POPULARITY
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId) {
-        R.id.sort_publishedAt -> {
+        R.id.sort_publishedAt -> if (!item.isChecked) {
             (options as? EverythingRequestOptions)?.sortBy = EverythingRequestOptions.SORT_BY_PUBLISHED_AT
+            App.component.getPreferences().defaultSortOrder = EverythingRequestOptions.SORT_BY_PUBLISHED_AT
             options.page = RequestOptions.PAGE_DEFAULT
             item.isChecked = true
             load()
             true
-        }
-        R.id.sort_popularity -> {
+        } else false
+        R.id.sort_popularity -> if (!item.isChecked) {
             (options as? EverythingRequestOptions)?.sortBy = EverythingRequestOptions.SORT_BY_POPULARITY
+            App.component.getPreferences().defaultSortOrder = EverythingRequestOptions.SORT_BY_POPULARITY
             options.page = RequestOptions.PAGE_DEFAULT
             item.isChecked = true
             load()
             true
-        }
+        } else false
         else -> super.onOptionsItemSelected(item)
     }
 

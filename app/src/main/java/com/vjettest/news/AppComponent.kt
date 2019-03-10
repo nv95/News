@@ -7,6 +7,8 @@ import com.vjettest.news.core.database.AppDatabase
 import com.vjettest.news.core.database.DatabaseModule
 import com.vjettest.news.core.network.NetworkModule
 import com.vjettest.news.core.network.NewsApiService
+import com.vjettest.news.core.preferences.AppPreferences
+import com.vjettest.news.core.preferences.PreferencesModule
 import com.vjettest.news.news_list.NewsListFragment
 import com.vjettest.news.news_list.favourites.FavouritesListFragment
 import com.vjettest.news.news_list.trending.TrendingListFragment
@@ -14,7 +16,7 @@ import dagger.Component
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
-@Component(modules = [NetworkModule::class, ImageLoaderModule::class, DatabaseModule::class])
+@Component(modules = [NetworkModule::class, ImageLoaderModule::class, DatabaseModule::class, PreferencesModule::class])
 @Singleton
 interface AppComponent {
 
@@ -28,4 +30,5 @@ interface AppComponent {
     fun getImageLoader(): ImageLoader
     fun getDatabase(): AppDatabase
     fun getHttpClient(): OkHttpClient
+    fun getPreferences(): AppPreferences
 }

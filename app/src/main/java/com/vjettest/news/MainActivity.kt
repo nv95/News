@@ -12,6 +12,7 @@ import com.vjettest.news.core.database.AppDatabase
 import com.vjettest.news.core.model.SourceInfo
 import com.vjettest.news.core.network.NewsApiService
 import com.vjettest.news.core.network.options.EverythingRequestOptions
+import com.vjettest.news.core.preferences.AppPreferences
 import com.vjettest.news.news_list.NewsListFragment
 import com.vjettest.news.news_list.favourites.FavouritesListFragment
 import com.vjettest.news.news_list.trending.TrendingTabsFragment
@@ -26,6 +27,8 @@ class MainActivity : AppBaseActivity(), NavigationView.OnNavigationItemSelectedL
     lateinit var apiService: NewsApiService
     @Inject
     lateinit var database: AppDatabase
+    @Inject
+    lateinit var preferences: AppPreferences
 
     private val drawer by bindView<DrawerLayout>(R.id.drawer)
     private val navigationView by bindView<NavigationView>(R.id.nav_view)
@@ -69,7 +72,7 @@ class MainActivity : AppBaseActivity(), NavigationView.OnNavigationItemSelectedL
             R.id.nav_favourites -> FavouritesListFragment()
             R.id.nav_all -> NewsListFragment().apply {
                 arguments = EverythingRequestOptions().run {
-                    sortBy = EverythingRequestOptions.SORT_BY_PUBLISHED_AT
+                    sortBy = preferences.defaultSortOrder
                     language = "en"
                     q = "*"
                     toBundle()
@@ -77,7 +80,7 @@ class MainActivity : AppBaseActivity(), NavigationView.OnNavigationItemSelectedL
             }
             else -> NewsListFragment().apply {
                 arguments = EverythingRequestOptions().run {
-                    sortBy = EverythingRequestOptions.SORT_BY_PUBLISHED_AT
+                    sortBy = preferences.defaultSortOrder
                     sources = listOf(this@MainActivity.sources[item.order].id)
                     toBundle()
                 }
