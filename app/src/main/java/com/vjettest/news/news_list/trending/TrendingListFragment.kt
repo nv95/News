@@ -17,6 +17,7 @@ class TrendingListFragment : NewsListFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         options["category"] = arguments?.getString("category") ?: Category.GENERAL.value
+        setHasOptionsMenu(false)
     }
 
     override fun onLoadContent() = apiService.getTopHeadlines(options)

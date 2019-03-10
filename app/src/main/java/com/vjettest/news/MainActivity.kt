@@ -2,7 +2,6 @@ package com.vjettest.news
 
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
@@ -12,6 +11,7 @@ import com.vjettest.news.common.plusAssign
 import com.vjettest.news.core.database.AppDatabase
 import com.vjettest.news.core.model.SourceInfo
 import com.vjettest.news.core.network.NewsApiService
+import com.vjettest.news.core.network.options.EverythingRequestOptions
 import com.vjettest.news.news_list.NewsListFragment
 import com.vjettest.news.news_list.favourites.FavouritesListFragment
 import com.vjettest.news.news_list.trending.TrendingTabsFragment
@@ -67,8 +67,20 @@ class MainActivity : AppBaseActivity(), NavigationView.OnNavigationItemSelectedL
         setActiveFragment(when (item.itemId) {
             R.id.nav_top_headlines -> TrendingTabsFragment()
             R.id.nav_favourites -> FavouritesListFragment()
+            R.id.nav_all -> NewsListFragment().apply {
+                arguments = EverythingRequestOptions().run {
+                    sortBy = EverythingRequestOptions.SORT_BY_PUBLISHED_AT
+                    language = "en"
+                    q = "*"
+                    toBundle()
+                }
+            }
             else -> NewsListFragment().apply {
-                arguments = bundleOf("source" to sources[item.order])
+                arguments = EverythingRequestOptions().run {
+                    sortBy = EverythingRequestOptions.SORT_BY_PUBLISHED_AT
+                    sources = listOf(this@MainActivity.sources[item.order].id)
+                    toBundle()
+                }
             }
         }, item.title)
         drawer.closeDrawers()

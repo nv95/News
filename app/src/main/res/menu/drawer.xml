@@ -10,6 +10,10 @@
             android:id="@+id/nav_favourites"
             android:icon="@drawable/ic_star_border_black_24dp"
             android:title="@string/favourites"/>
+        <item
+            android:id="@+id/nav_all"
+            android:icon="@drawable/ic_layers_black_24dp"
+            android:title="@string/all_news"/>
     </group>
     <item android:id="@+id/nav_sources"
           android:title="@string/sources">

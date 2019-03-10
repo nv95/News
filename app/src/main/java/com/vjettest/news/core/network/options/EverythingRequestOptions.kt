@@ -1,5 +1,6 @@
 package com.vjettest.news.core.network.options
 
+import android.os.Bundle
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -50,9 +51,20 @@ class EverythingRequestOptions : RequestOptions() {
      */
     var sortBy by prop({ it }, { it })
 
+    override fun fromBundle(bundle: Bundle) {
+        super.fromBundle(bundle)
+        fromBundle(bundle, "domains")
+        fromBundle(bundle, "excludeDomains")
+        fromBundle(bundle, "from")
+        fromBundle(bundle, "to")
+        fromBundle(bundle, "language")
+        fromBundle(bundle, "sortBy")
+    }
 
     companion object {
 
         private val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.UK)
+        const val SORT_BY_PUBLISHED_AT = "publishedAt"
+        const val SORT_BY_POPULARITY = "popularity"
     }
 }

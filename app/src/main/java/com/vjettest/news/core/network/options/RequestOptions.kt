@@ -1,5 +1,7 @@
 package com.vjettest.news.core.network.options
 
+import android.os.Bundle
+import androidx.annotation.CallSuper
 import java.util.*
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -41,6 +43,35 @@ open class RequestOptions : HashMap<String, String>() {
     }, {
         it.toString()
     })
+
+    protected fun fromBundle(bundle: Bundle, key: String) {
+        bundle.getString(key)?.let { put(key, it) }
+    }
+
+    @CallSuper
+    open fun fromBundle(bundle: Bundle) {
+        fromBundle(bundle, "q")
+        fromBundle(bundle, "sources")
+        fromBundle(bundle, "pageSize")
+        fromBundle(bundle, "page")
+    }
+
+    fun toBundle(): Bundle {
+        val bundle = Bundle(this.size)
+        this.forEach { (key, value) ->
+            bundle.putString(key, value)
+        }
+        return bundle
+    }
+
+    companion object {
+
+        const val PAGE_DEFAULT = 1
+    }
+
+    /**
+     * Delegates
+     */
 
     protected inner class PropertyDelegate<T>(
         private val getterTransform: (String) -> T?,
