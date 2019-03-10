@@ -1,6 +1,7 @@
 package com.vjettest.news.common
 
 import android.content.Context
+import android.text.format.DateFormat
 import android.text.format.DateUtils
 import android.widget.ImageView
 import com.vjettest.news.App
@@ -21,6 +22,8 @@ fun Date.formatDateRelative(context: Context): String = if (DateUtils.isToday(th
 } else {
     DateUtils.formatDateTime(context, this.time, DateUtils.FORMAT_ABBREV_RELATIVE)
 }
+
+fun Date.format(context: Context) = DateFormat.getLongDateFormat(context).format(this)!!
 
 val Date.withoutTime: Date
     get() {

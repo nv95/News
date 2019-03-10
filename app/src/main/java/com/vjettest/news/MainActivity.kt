@@ -115,7 +115,11 @@ class MainActivity : AppBaseActivity(), NavigationView.OnNavigationItemSelectedL
         disposables += apiService.getSources(language = "en", country = "us")
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doAfterNext { database.sourcesDao().replaceWith(it.sources) }
+            .doAfterNext {
+                disposables += database.sourcesDao().replaceWith(it.sources)
+                    .subscribeOn(Schedulers.io())
+                    .subscribe()
+            }
             .subscribe({ result ->
                 fillSourcesMenu(result.sources)
             }, { e ->

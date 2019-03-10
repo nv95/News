@@ -15,4 +15,8 @@
     <string name="published_at">Published at</string>
     <string name="popularity">Popularity</string>
     <string name="all_news">All news</string>
+    <string name="done">Done</string>
+    <string name="no_date_selected">No date selected</string>
+    <string name="reset">Reset</string>
+    <string name="filter">Filter</string>
 </resources>

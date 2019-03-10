@@ -1,5 +1,7 @@
 package com.vjettest.news.news_list
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -61,6 +63,15 @@ open class NewsListFragment : BaseListFragment<Article>(), Observer<NewsList> {
         load()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_FILTER && resultCode == Activity.RESULT_OK && data != null) {
+            FilterActivity.handleResult(data, options as EverythingRequestOptions)
+            options.page = RequestOptions.PAGE_DEFAULT
+            load()
+        }
+    }
+
     override fun onDestroy() {
         currentWorker?.takeIf { !it.isDisposed }?.dispose()
         super.onDestroy()
@@ -92,6 +103,10 @@ open class NewsListFragment : BaseListFragment<Article>(), Observer<NewsList> {
             load()
             true
         } else false
+        R.id.action_filter -> {
+            FilterActivity.open(this, options as EverythingRequestOptions, REQUEST_CODE_FILTER)
+            true
+        }
         else -> super.onOptionsItemSelected(item)
     }
 
@@ -141,4 +156,9 @@ open class NewsListFragment : BaseListFragment<Article>(), Observer<NewsList> {
     }
 
     override fun isLoading() = adapter.isLoading
+
+    companion object {
+
+        private const val REQUEST_CODE_FILTER = 100
+    }
 }

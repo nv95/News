@@ -63,7 +63,7 @@ class EverythingRequestOptions : RequestOptions() {
 
     companion object {
 
-        private val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.UK)
+        private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.UK)
         const val SORT_BY_PUBLISHED_AT = "publishedAt"
         const val SORT_BY_POPULARITY = "popularity"
     }

@@ -9,7 +9,7 @@ import com.vjettest.news.R
 
 abstract class AppBaseActivity : AppCompatActivity() {
 
-    protected open val toolbar by bindView<Toolbar>(R.id.toolbar)
+    protected open val toolbar: Toolbar? by bindView(R.id.toolbar)
 
     protected fun <ViewT : View> bindView(@IdRes idRes: Int) = lazy(LazyThreadSafetyMode.NONE) {
         findViewById<ViewT>(idRes)
