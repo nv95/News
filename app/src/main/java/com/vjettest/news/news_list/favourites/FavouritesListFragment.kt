@@ -74,25 +74,23 @@ class FavouritesListFragment : AppBaseFragment() {
         currentWorker = database.articlesDao().getAll()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(this::onNext, this::onError, this::onComplete)
+            .subscribe(this::onNext, this::onError)
     }
 
     /**
      * Loading callback
      */
 
-    private fun onComplete() {
-        adapter.isLoading = false
-        texViewHolder.visibility = if (dataset.isEmpty()) View.VISIBLE else View.GONE
-    }
-
     private fun onNext(t: List<Article>) {
         dataset.clear()
         dataset += t
         adapter.notifyDataSetChanged()
+        adapter.isLoading = false
+        texViewHolder.visibility = if (dataset.isEmpty()) View.VISIBLE else View.GONE
     }
 
     private fun onError(e: Throwable) {
+        adapter.isLoading = false
         texViewHolder.visibility = View.GONE
         if (dataset.isEmpty()) {
             textViewError.text = context?.getErrorMessage(e)

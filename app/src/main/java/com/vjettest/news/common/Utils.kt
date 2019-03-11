@@ -8,6 +8,7 @@ import com.vjettest.news.App
 import com.vjettest.news.R
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.util.*
 
@@ -60,5 +61,6 @@ operator fun CompositeDisposable.plusAssign(d: Disposable) {
 
 fun Context.getErrorMessage(e: Throwable): String = getString(when(e) {
     is UnknownHostException -> R.string.network_unavailable
+    is SocketTimeoutException -> R.string.server_not_responding
     else -> R.string.error_occurred
 })

@@ -9,6 +9,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -24,6 +25,8 @@ class NetworkModule {
         .client(
             OkHttpClient.Builder()
                 .addInterceptor(AuthenticationInterceptor(BuildConfig.API_KEY))
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
                 .build()
         )
         .build()
@@ -31,5 +34,8 @@ class NetworkModule {
 
     @Provides
     @NonNull
-    fun provideHttpClient() = OkHttpClient()
+    fun provideHttpClient(): OkHttpClient = OkHttpClient.Builder()
+        .connectTimeout(10, TimeUnit.SECONDS)
+        .readTimeout(10, TimeUnit.SECONDS)
+        .build()
 }
