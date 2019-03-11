@@ -25,4 +25,11 @@
     <string name="no_articles_found">No articles found</string>
     <string name="no_favourites_found">No favourites found</string>
     <string name="server_not_responding">Server not responding</string>
+    <string name="error_bad_request">The request was unacceptable, often due to a missing or misconfigured parameter
+    </string>
+    <string name="error_unauthorized">Your API key was missing from the request, or wasn\'t correct</string>
+    <string name="error_too_many_requests">You made too many requests within a window of time and have been rate
+        limited. Back off for a while
+    </string>
+    <string name="server_error">Something went wrong on server side</string>
 </resources>
