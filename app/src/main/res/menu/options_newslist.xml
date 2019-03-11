@@ -17,11 +17,11 @@
                     android:checked="true"/>
                 <item
                     android:id="@+id/sort_popularity"
-                    android:title="@string/popularity" />
+                    android:title="@string/popularity"/>
             </group>
         </menu>
     </item>
     <item
         android:id="@+id/action_filter"
-        android:title="@string/filter" />
+        android:title="@string/filter"/>
 </menu>

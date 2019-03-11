@@ -6,7 +6,6 @@ import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.vjettest.news.R
-import java.net.UnknownHostException
 
 abstract class AppBaseActivity : AppCompatActivity() {
 
@@ -16,7 +15,8 @@ abstract class AppBaseActivity : AppCompatActivity() {
         findViewById<ViewT>(idRes)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?) = when(item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem?) = when (item?.itemId) {
+        // "Up" button
         android.R.id.home -> {
             finish()
             true

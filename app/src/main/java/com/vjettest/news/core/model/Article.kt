@@ -8,7 +8,6 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 
-
 @Entity(tableName = "articles")
 data class Article(
     var source: Source,

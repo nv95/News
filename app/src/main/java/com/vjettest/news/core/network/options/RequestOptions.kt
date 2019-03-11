@@ -6,6 +6,7 @@ import java.util.*
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
+@Suppress("unused")
 open class RequestOptions : HashMap<String, String>() {
 
     /**
@@ -14,7 +15,7 @@ open class RequestOptions : HashMap<String, String>() {
     var q by prop({ it }, { it })
 
     /**
-     * A comma-seperated string of identifiers (maximum 20) for the news sources or blogs you want headlines from.
+     * A comma-separated string of identifiers (maximum 20) for the news sources or blogs you want headlines from.
      */
     var sources by prop({
         it.split(',')
@@ -92,5 +93,5 @@ open class RequestOptions : HashMap<String, String>() {
     }
 
     protected fun <T> prop(getterTransform: (String) -> T?, setterTransform: (T) -> String) =
-        PropertyDelegate<T>(getterTransform, setterTransform)
+        PropertyDelegate(getterTransform, setterTransform)
 }

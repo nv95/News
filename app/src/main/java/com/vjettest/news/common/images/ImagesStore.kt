@@ -10,6 +10,9 @@ class ImagesStore(context: Context) {
 
     private val dir = context.getExternalFilesDir("images")
 
+    /**
+     * Save image into filesystem
+     */
     fun put(url: String?): String? {
         if (url?.startsWith("file://") != false) {
             return url

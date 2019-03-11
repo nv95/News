@@ -3,7 +3,7 @@ package com.vjettest.news.core
 import android.os.Bundle
 import android.os.Parcelable
 
-class PagedList<E:Parcelable> : ArrayList<E>() {
+class PagedList<E : Parcelable> : ArrayList<E>() {
 
     var total = 0
 

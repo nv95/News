@@ -19,7 +19,7 @@ abstract class AppBaseDialogFragment<T> : AppCompatDialogFragment() {
      * View
      */
 
-    protected val dialogView: View by lazy {
+    private val dialogView: View by lazy {
         LayoutInflater.from(requireContext()).inflate(layoutId, null, false)
     }
 

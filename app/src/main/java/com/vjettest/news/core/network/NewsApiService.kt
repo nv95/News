@@ -12,10 +12,10 @@ import retrofit2.http.QueryMap
 interface NewsApiService {
 
     @GET("top-headlines")
-    fun getTopHeadlines(@QueryMap(encoded=true) options: RequestOptions): Observable<NewsList>
+    fun getTopHeadlines(@QueryMap(encoded = true) options: RequestOptions): Observable<NewsList>
 
     @GET("everything")
-    fun getEverything(@QueryMap(encoded=true) options: RequestOptions): Observable<NewsList>
+    fun getEverything(@QueryMap(encoded = true) options: RequestOptions): Observable<NewsList>
 
     @GET("sources")
     fun getSources(

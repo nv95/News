@@ -7,6 +7,9 @@ import androidx.appcompat.app.AlertDialog
 import com.vjettest.news.R
 import java.util.*
 
+/**
+ * Standard DatePickerDialog available from api v24, so we need to use custom implementation
+ */
 class DatePickerDialogFragment : AppBaseDialogFragment<Date?>() {
 
     override val layoutId = R.layout.dialog_datepicker
@@ -26,7 +29,7 @@ class DatePickerDialogFragment : AppBaseDialogFragment<Date?>() {
     }
 
     override fun onBuildDialog(dialog: AlertDialog.Builder) {
-        dialog.setNeutralButton(R.string.reset) { _,_ ->
+        dialog.setNeutralButton(R.string.reset) { _, _ ->
             listener?.onDialogConfirmed(arguments, null)
         }
     }

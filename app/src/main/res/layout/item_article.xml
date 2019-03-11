@@ -1,48 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?selectableItemBackground"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        tools:ignore="RtlSymmetry">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    tools:ignore="Overdraw,RtlSymmetry">
 
     <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="@dimen/list_image_width"
-            android:layout_height="@dimen/list_image_height"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:scaleType="centerCrop"
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp"/>
+        android:id="@+id/imageView"
+        android:layout_width="@dimen/list_image_width"
+        android:layout_height="@dimen/list_image_height"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:scaleType="centerCrop"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        tools:ignore="ContentDescription"/>
 
     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="12dp"
+        android:paddingRight="12dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingEnd="12dp"
-            android:paddingRight="12dp"
-            android:orientation="vertical">
+            android:maxLines="2"
+            tools:text="Lorem ipsum"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
 
         <TextView
-                android:id="@+id/textView_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="2"
-                tools:text="Lorem ipsum"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
-
-        <TextView
-                android:id="@+id/textView_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:ellipsize="end"
-                android:maxLines="2"
-                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            android:id="@+id/textView_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
     </LinearLayout>
 
 </LinearLayout>

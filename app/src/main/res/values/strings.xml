@@ -10,7 +10,6 @@
     <string name="top_headlines">Top headlines</string>
     <string name="favourites">Favourites</string>
     <string name="sources">Sources</string>
-    <string name="today">Today</string>
     <string name="sort_order">Sort order</string>
     <string name="published_at">Published at</string>
     <string name="popularity">Popularity</string>
@@ -39,4 +38,6 @@
     <string name="category_entertainment">Entertainment</string>
     <string name="category_business">Business</string>
     <string name="category_general">General</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
 </resources>

@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="From"/>
+                android:text="@string/from"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_dateFrom"
@@ -48,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="To"/>
+                android:text="@string/to"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button_dateTo"

@@ -20,26 +20,7 @@ fun Date.formatRelative(): CharSequence = DateUtils.getRelativeTimeSpanString(
     DateUtils.FORMAT_ABBREV_ALL
 )
 
-fun Date.formatDateRelative(context: Context): String = if (DateUtils.isToday(this.time)) {
-    context.getString(R.string.today)
-} else {
-    DateUtils.formatDateTime(context, this.time, DateUtils.FORMAT_ABBREV_RELATIVE)
-}
-
 fun Date.format(context: Context) = DateFormat.getLongDateFormat(context).format(this)!!
-
-val Date.withoutTime: Date
-    get() {
-        val calendar = Calendar.getInstance()
-
-        calendar.time = this
-        calendar.set(Calendar.HOUR_OF_DAY, 0)
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
-
-        return calendar.time
-    }
 
 fun ImageView.setImageAsync(url: String?) {
     if (url == null) {
@@ -60,15 +41,17 @@ operator fun CompositeDisposable.plusAssign(d: Disposable) {
     this.add(d)
 }
 
-fun Context.getErrorMessage(e: Throwable): String = getString(when(e) {
-    is UnknownHostException -> R.string.network_unavailable
-    is SocketTimeoutException -> R.string.server_not_responding
-    is HttpException -> when (e.code()) {
-        400 -> R.string.error_bad_request
-        401 -> R.string.error_unauthorized
-        429 -> R.string.error_too_many_requests
-        500 -> R.string.server_error
+fun Context.getErrorMessage(e: Throwable): String = getString(
+    when (e) {
+        is UnknownHostException -> R.string.network_unavailable
+        is SocketTimeoutException -> R.string.server_not_responding
+        is HttpException -> when (e.code()) {
+            400 -> R.string.error_bad_request
+            401 -> R.string.error_unauthorized
+            429 -> R.string.error_too_many_requests
+            500 -> R.string.server_error
+            else -> R.string.error_occurred
+        }
         else -> R.string.error_occurred
     }
-    else -> R.string.error_occurred
-})
+)

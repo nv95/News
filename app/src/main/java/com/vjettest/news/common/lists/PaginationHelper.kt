@@ -7,21 +7,18 @@ class PaginationHelper(private val callback: Callback) : RecyclerView.OnScrollLi
 
     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
         super.onScrollStateChanged(recyclerView, newState)
-        val layoutManager = (recyclerView.layoutManager as? LinearLayoutManager)?:return
+        val layoutManager = (recyclerView.layoutManager as? LinearLayoutManager) ?: return
         val visibleItemCount = layoutManager.childCount
         val totalItemCount = layoutManager.itemCount
         val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
 
         if (!callback.isLoading() && !callback.isLastPage()) {
             if ((visibleItemCount + firstVisibleItemPosition) >=
-                totalItemCount && firstVisibleItemPosition >= 0) {
+                totalItemCount && firstVisibleItemPosition >= 0
+            ) {
                 callback.onNextPage()
             }
         }
-    }
-
-    companion object {
-        private const val SCROLL_END_THRESHOLD = 3
     }
 
     interface Callback {

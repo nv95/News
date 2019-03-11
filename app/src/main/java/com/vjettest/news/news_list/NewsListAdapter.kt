@@ -6,8 +6,8 @@ import com.vjettest.news.common.lists.AppBaseViewHolder
 import com.vjettest.news.common.lists.LoadingViewHolder
 import com.vjettest.news.core.model.Article
 
-class NewsListAdapter(private val dataset: List<Article>, private val paginate: Boolean = true)
-    : RecyclerView.Adapter<AppBaseViewHolder<*>>() {
+class NewsListAdapter(private val dataset: List<Article>, private val paginate: Boolean = true) :
+    RecyclerView.Adapter<AppBaseViewHolder<*>>() {
 
     var isLoading = false
         set(value) {

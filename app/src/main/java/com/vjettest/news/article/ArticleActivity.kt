@@ -100,6 +100,7 @@ class ArticleActivity : AppBaseActivity() {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
+        // Fill layout with data
         title = article.title
         textViewTitle.text = article.title
         textViewDescription.text = article.description ?: article.title
@@ -110,6 +111,7 @@ class ArticleActivity : AppBaseActivity() {
         } else {
             imageView.visibility = View.GONE
         }
+        //Check if article in favourites
         disposables += database.articlesDao().findByUrl(article.url)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -143,7 +145,7 @@ class ArticleActivity : AppBaseActivity() {
         }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe ({
+            .subscribe({
                 isFavoured = true
                 buttonFavourite.isEnabled = true
                 Snackbar.make(textViewContent, R.string.added_to_favourites, Snackbar.LENGTH_SHORT).show()
@@ -172,7 +174,7 @@ class ArticleActivity : AppBaseActivity() {
 
     companion object {
 
-        private const val EXTRA_ARTICLE = "article";
+        private const val EXTRA_ARTICLE = "article"
 
         fun open(context: Context, article: Article) {
             context.startActivity(

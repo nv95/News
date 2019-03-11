@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import com.vjettest.news.R
 
-class LoadingViewHolder(itemView: View) : AppBaseViewHolder<Boolean>(itemView){
+class LoadingViewHolder(itemView: View) : AppBaseViewHolder<Boolean>(itemView) {
 
     private val progressBar = itemView.findViewById<ProgressBar>(R.id.progressBar)
 

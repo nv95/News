@@ -18,7 +18,8 @@ class AppPreferences(context: Context) {
 
     private inner class PreferenceDelegate(private val defValue: String) : ReadWriteProperty<AppPreferences, String> {
 
-        override fun getValue(thisRef: AppPreferences, property: KProperty<*>) = thisRef.prefs.getString(property.name, defValue) ?: defValue
+        override fun getValue(thisRef: AppPreferences, property: KProperty<*>) =
+            thisRef.prefs.getString(property.name, defValue) ?: defValue
 
         override fun setValue(thisRef: AppPreferences, property: KProperty<*>, value: String) {
             thisRef.prefs.edit().putString(property.name, value).apply()

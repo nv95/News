@@ -4,10 +4,11 @@ import android.os.Bundle
 import java.text.SimpleDateFormat
 import java.util.*
 
+@Suppress("unused")
 class EverythingRequestOptions : RequestOptions() {
 
     /**
-     * A comma-seperated string of domains (eg bbc.co.uk, techcrunch.com, engadget.com) to restrict the search to.
+     * A comma-separated string of domains (eg bbc.co.uk, techcrunch.com, engadget.com) to restrict the search to.
      */
     var domains by prop({
         it.split(',')
@@ -15,7 +16,7 @@ class EverythingRequestOptions : RequestOptions() {
         it.joinToString(",")
     })
     /**
-     * A comma-seperated string of domains (eg bbc.co.uk, techcrunch.com, engadget.com) to remove from the results.
+     * A comma-separated string of domains (eg bbc.co.uk, techcrunch.com, engadget.com) to remove from the results.
      */
     var excludeDomains by prop({
         it.split(',')
