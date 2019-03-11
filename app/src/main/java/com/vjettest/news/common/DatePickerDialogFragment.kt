@@ -22,6 +22,7 @@ class DatePickerDialogFragment : AppBaseDialogFragment<Date?>() {
             calendar.get(Calendar.DAY_OF_MONTH),
             null
         )
+        datePicker.maxDate = calendar.timeInMillis
     }
 
     override fun onBuildDialog(dialog: AlertDialog.Builder) {
