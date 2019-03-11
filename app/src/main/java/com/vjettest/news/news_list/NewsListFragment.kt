@@ -42,6 +42,7 @@ open class NewsListFragment : BaseListFragment<Article>() {
             options.fromBundle(it)
             (options as? EverythingRequestOptions)?.sortBy = App.component.getPreferences().defaultSortOrder
         }
+        options.page = RequestOptions.PAGE_DEFAULT
         setHasOptionsMenu(true)
     }
 
@@ -65,6 +66,9 @@ open class NewsListFragment : BaseListFragment<Article>() {
         load()
     }
 
+    /**
+     * Handle filter activity result
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_FILTER && resultCode == Activity.RESULT_OK && data != null) {
@@ -74,21 +78,33 @@ open class NewsListFragment : BaseListFragment<Article>() {
         }
     }
 
+    /**
+     * Cancel all background operations
+     */
     override fun onDestroy() {
         currentWorker?.takeIf { !it.isDisposed }?.dispose()
         super.onDestroy()
     }
 
+    /**
+     * Options menu
+     */
+
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.options_newslist, menu)
-        menu?.findItem(R.id.sort_publishedAt)?.isChecked = (options as? EverythingRequestOptions)?.sortBy ==
-                EverythingRequestOptions.SORT_BY_PUBLISHED_AT
-        menu?.findItem(R.id.sort_popularity)?.isChecked = (options as? EverythingRequestOptions)?.sortBy ==
-                EverythingRequestOptions.SORT_BY_POPULARITY
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId) {
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        if ((options as? EverythingRequestOptions)?.sortBy == EverythingRequestOptions.SORT_BY_PUBLISHED_AT) {
+            menu.findItem(R.id.sort_publishedAt).isChecked = true
+        } else {
+            menu.findItem(R.id.sort_popularity).isChecked = true
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.sort_publishedAt -> if (!item.isChecked) {
             (options as? EverythingRequestOptions)?.sortBy = EverythingRequestOptions.SORT_BY_PUBLISHED_AT
             App.component.getPreferences().defaultSortOrder = EverythingRequestOptions.SORT_BY_PUBLISHED_AT
@@ -111,6 +127,10 @@ open class NewsListFragment : BaseListFragment<Article>() {
         }
         else -> super.onOptionsItemSelected(item)
     }
+
+    /**
+     * Content loading
+     */
 
     override fun load() {
         swipeRefreshLayout.isRefreshing = dataset.isEmpty() || options.page == RequestOptions.PAGE_DEFAULT
