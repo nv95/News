@@ -9,7 +9,7 @@ import com.vjettest.news.news_list.NewsListFragment
 class TrendingListFragment : NewsListFragment() {
 
     override val options = TopHeadlinesRequestOptions().apply {
-        country = "ua"
+        country = "us"
     }
 
     override val layoutId = R.layout.fragment_simple_list

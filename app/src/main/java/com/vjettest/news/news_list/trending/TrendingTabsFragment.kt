@@ -18,13 +18,17 @@ class TrendingTabsFragment : AppBaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        pager.adapter = TrendingTabsAdapter(fragmentManager, arrayOf(
-            Category.GENERAL,
-            Category.BUSINESS,
-            Category.ENTERTAINMENT,
-            Category.SCIENCE,
-            Category.SPORTS
-        ))
+        pager.adapter = TrendingTabsAdapter(
+            fragmentManager, arrayOf(
+                Category.GENERAL to getString(R.string.category_general),
+                Category.BUSINESS to getString(R.string.category_business),
+                Category.ENTERTAINMENT to getString(R.string.category_entertainment),
+                Category.SCIENCE to getString(R.string.category_science),
+                Category.SPORTS to getString(R.string.category_sports),
+                Category.HEALTH to getString(R.string.category_health),
+                Category.TECHNOLOGY to getString(R.string.category_technology)
+            )
+        )
         tabLayout.setupWithViewPager(pager)
     }
 }
