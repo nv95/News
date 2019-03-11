@@ -43,9 +43,21 @@ class MainActivity : AppBaseActivity(), NavigationView.OnNavigationItemSelectedL
         App.component.inject(this)
         navigationView.setNavigationItemSelectedListener(this)
 
-        setActiveFragment(TrendingTabsFragment(), getString(R.string.top_headlines))
-        loadSourcesFromCache()
-        loadSourcesFromNetwork()
+        val fragment = (supportFragmentManager.findFragmentById(R.id.content) as? AppBaseFragment)
+        //If activity state was restored
+        if (fragment == null) {
+            setActiveFragment(TrendingTabsFragment(), getString(R.string.top_headlines))
+            loadSourcesFromCache()
+            loadSourcesFromNetwork()
+        } else {
+            setActiveFragment(fragment, savedInstanceState?.getCharSequence(KEY_TITLE))
+            loadSourcesFromCache()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        outState?.putCharSequence(KEY_TITLE, supportActionBar?.subtitle)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onDestroy() {
@@ -67,11 +79,18 @@ class MainActivity : AppBaseActivity(), NavigationView.OnNavigationItemSelectedL
             .commit()
     }
 
+    /**
+     * Menus
+     */
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         item.isChecked = true
         setActiveFragment(when (item.itemId) {
+            //Trending
             R.id.nav_top_headlines -> TrendingTabsFragment()
+            //Favourites
             R.id.nav_favourites -> FavouritesListFragment()
+            //All news
             R.id.nav_all -> NewsListFragment().apply {
                 arguments = EverythingRequestOptions().run {
                     sortBy = preferences.defaultSortOrder
@@ -80,6 +99,7 @@ class MainActivity : AppBaseActivity(), NavigationView.OnNavigationItemSelectedL
                     toBundle()
                 }
             }
+            //Source
             else -> NewsListFragment().apply {
                 arguments = EverythingRequestOptions().run {
                     sortBy = preferences.defaultSortOrder
@@ -99,6 +119,10 @@ class MainActivity : AppBaseActivity(), NavigationView.OnNavigationItemSelectedL
         }
         else -> super.onOptionsItemSelected(item)
     }
+
+    /**
+     * Sources list
+     */
 
     private fun loadSourcesFromCache() {
         disposables += database.sourcesDao().getAll()
@@ -127,5 +151,10 @@ class MainActivity : AppBaseActivity(), NavigationView.OnNavigationItemSelectedL
             navMenu.add(R.id.group_sources, it.hashCode(), i, it.name)
         }
         navMenu.setGroupCheckable(R.id.group_sources, true, true)
+    }
+
+    companion object {
+
+        private const val KEY_TITLE = "title"
     }
 }
